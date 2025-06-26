@@ -1,0 +1,41 @@
+{
+  "Files": [
+    {
+      "Id": "H:\\UniCEUB2023\\Persistência de Dados Com C#\\Exemplos\\ExemploBlazorADOFuncionario\\ExemploBlazorADOFuncionario\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\ExemploBlazorADOFuncionario.bundle.scp.css",
+      "PackagePath": "staticwebassets\\ExemploBlazorADOFuncionario.bundle.scp.css"
+    },
+    {
+      "Id": "H:\\UniCEUB2023\\Persistência de Dados Com C#\\Exemplos\\ExemploBlazorADOFuncionario\\ExemploBlazorADOFuncionario\\wwwroot\\app.css",
+      "PackagePath": "staticwebassets\\app.css"
+    },
+    {
+      "Id": "H:\\UniCEUB2023\\Persistência de Dados Com C#\\Exemplos\\ExemploBlazorADOFuncionario\\ExemploBlazorADOFuncionario\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "H:\\UniCEUB2023\\Persistência de Dados Com C#\\Exemplos\\ExemploBlazorADOFuncionario\\ExemploBlazorADOFuncionario\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "H:\\UniCEUB2023\\Persistência de Dados Com C#\\Exemplos\\ExemploBlazorADOFuncionario\\ExemploBlazorADOFuncionario\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.ExemploBlazorADOFuncionario.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.ExemploBlazorADOFuncionario.props",
+      "PackagePath": "build\\ExemploBlazorADOFuncionario.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.ExemploBlazorADOFuncionario.props",
+      "PackagePath": "buildMultiTargeting\\ExemploBlazorADOFuncionario.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.ExemploBlazorADOFuncionario.props",
+      "PackagePath": "buildTransitive\\ExemploBlazorADOFuncionario.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

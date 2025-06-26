@@ -1,0 +1,217 @@
+﻿@page "/funcionarios"
+@inject FuncionarioServico funcionarioServico
+@inject DepartamentoServico departamentoServico
+@inject IJSRuntime JSRuntime
+@using ExemploBlazorADOFuncionario.Entidades
+@using ExemploBlazorADOFuncionario.Servico
+@rendermode InteractiveServer
+
+<h3>Funcionários</h3>
+<button class="btn btn-primary" @onclick="AbrirModalNovoFuncionario">Adicionar Funcionário</button>
+
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Email</th>
+            <th>Departamento</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (funcionarios != null)
+        {
+            @foreach (var funcionario in funcionarios)
+            {
+                <tr>
+                    <td>@funcionario.Nome</td>
+                    <td>@funcionario.CPF</td>
+                    <td>@funcionario.Email</td>
+                    <td>@funcionario.NomeDepartamento</td>
+                    <td>
+                        <button class="btn btn-secondary" @onclick="() => AbrirModalEditarFuncionario(funcionario)">Editar</button>
+                        <button class="btn btn-danger" @onclick="() => ConfirmarDeletar(funcionario.Id)">Deletar</button>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@* @if (funcionarios != null)
+{
+    <div class="grid">
+        <QuickGrid class="table mt-3" Items="@funcionarios" Pagination="@pagination">
+            <PropertyColumn Property="@(f => f.Nome)" Title="Nome" Sortable="true" />
+            <PropertyColumn Property="@(f => f.CPF)" Title="CPF" Sortable="true" />
+            <PropertyColumn Property="@(f => f.Email)" Title="Email" Sortable="true" />
+            <!-- Supondo que DepartamentoNome seja uma propriedade em Funcionario para exibir o nome do departamento -->
+            <PropertyColumn Property="@(f => f.DepartamentoNome)" Title="Departamento" Sortable="true" />
+            <TemplateColumn Title="Ações" class="d-flex justify-content-around">
+                <div class="d-flex justify-content-around">
+                    <button class="btn btn-secondary btn-sm m-2" @onclick="@((Funcionario f) => AbrirModalEditarFuncionario(f))">Editar</button>
+                    <button class="btn btn-danger btn-sm m-2" @onclick="@((Funcionario f) => ConfirmarDeletar(f.Id))">Excluir</button>
+                </div>
+            </TemplateColumn>
+        </QuickGrid>
+    </div>
+    <div class="page-size-chooser">
+        Funcionários:
+        <select @bind="@pagination.ItemsPerPage">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <!-- Adicione mais opções conforme necessário -->
+        </select>
+    </div>
+    <Paginator State="@pagination" />
+} *@
+
+@if (exibirModal)
+{
+    <EditForm Model="@funcionarioEditando" OnValidSubmit="SalvarFuncionario">
+        <div class="modal" style="display:block">
+            <!-- Classe 'modal-lg' adicionada para um modal maior -->
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Detalhes do Funcionário</h5>
+                        <button type="button" class="btn-close" @onclick="FecharModal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Linha para Departamento -->
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="departamento">Departamento:</label>
+                                <select id="departamento" class="form-control form-select" @bind="funcionarioEditando.DepartamentoId">
+                                    @foreach (var dept in departamentos)
+                                    {
+                                        <option value="@dept.Id">@dept.Nome</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Linha para Nome -->
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="nome">Nome:</label>
+                                <InputText id="nome" class="form-control" @bind-Value="funcionarioEditando.Nome" />
+                            </div>
+                        </div>
+
+                        <!-- Linha para RG, CPF e Data de Nascimento -->
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="rg">RG:</label>
+                                <InputText id="rg" class="form-control" @bind-Value="funcionarioEditando.RG" />
+                            </div>
+                            <div class="col">
+                                <label for="cpf">CPF:</label>
+                                <InputText id="cpf" class="form-control" @bind-Value="funcionarioEditando.CPF" />
+                            </div>
+                            <div class="col">
+                                <label for="dataNascimento">Data de Nascimento:</label>
+                                <InputDate id="dataNascimento" class="form-control" @bind-Value="funcionarioEditando.DataNascimento" />
+                            </div>
+                        </div>
+
+                        <!-- Linha para Nome da Mãe e Nome do Pai -->
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="nomeMae">Nome da Mãe:</label>
+                                <InputText id="nomeMae" class="form-control" @bind-Value="funcionarioEditando.NomeMae" />
+                            </div>
+                            <div class="col">
+                                <label for="nomePai">Nome do Pai:</label>
+                                <InputText id="nomePai" class="form-control" @bind-Value="funcionarioEditando.NomePai" />
+                            </div>
+                        </div>
+
+                        <!-- Linha para E-mail -->
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="email">E-mail:</label>
+                                <InputText id="email" class="form-control" @bind-Value="funcionarioEditando.Email" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="FecharModal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+}
+
+
+@code {
+    private List<Funcionario> funcionarios;
+    private Funcionario funcionarioEditando = new Funcionario();
+    private List<Departamento> departamentos;
+    private bool exibirModal = false;
+    private string modalTitulo = "";
+    PaginationState pagination = new PaginationState { ItemsPerPage = 5 };
+
+    protected override async Task OnInitializedAsync()
+    {
+        funcionarios = await funcionarioServico.ObterTodosAsync();
+        departamentos = await departamentoServico.ObterTodosAsync();
+    }
+
+    private void AbrirModalNovoFuncionario()
+    {
+        funcionarioEditando = new Funcionario(); // Cria uma nova instância para adição
+        modalTitulo = "Adicionar Funcionário";
+        exibirModal = true;
+    }
+
+    private void AbrirModalEditarFuncionario(Funcionario funcionario)
+    {
+        funcionarioEditando = funcionario; // Carrega o funcionário existente para edição
+        modalTitulo = "Editar Funcionário";
+        exibirModal = true;
+    }
+
+    private async Task SalvarFuncionario()
+    {
+        try
+        {
+
+
+            if (funcionarioEditando.Id == 0) // Novo funcionário
+            {
+                await funcionarioServico.AdicionarFuncionarioAsync(funcionarioEditando);
+            }
+            else // Atualizar funcionário existente
+            {
+                await funcionarioServico.AtualizarFuncionarioAsync(funcionarioEditando);
+            }
+
+            exibirModal = false;
+            funcionarioEditando = new Funcionario(); // Reseta para limpar o formulário
+            funcionarios = await funcionarioServico.ObterTodosAsync(); // Atualiza a lista
+        }catch(Exception ex)
+        {
+            string msg = ex.Message;
+        }
+    }
+
+    private async Task ConfirmarDeletar(int funcionarioId)
+    {
+        var confirmado = await JSRuntime.InvokeAsync<bool>("confirm", "Tem certeza que deseja deletar este funcionário?");
+        if (confirmado)
+        {
+            await funcionarioServico.DeletarFuncionarioAsync(funcionarioId);
+            funcionarios = await funcionarioServico.ObterTodosAsync(); // Atualiza a lista após a exclusão
+        }
+    }
+
+    private void FecharModal()
+    {
+        exibirModal = false;
+    }
+}
+
